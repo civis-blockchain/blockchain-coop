@@ -135,16 +135,16 @@ exit
 ```
 # Chaincode intantiation in CLI environment
 source /opt/blockchain-coop/env
-peer chaincode install -n ${CHAINCODE} -v 1.0 -p blockchain-coop/go/chaincode_example02/
-peer chaincode instantiate -o ${ORDERER_ADDR} --tls --cafile ${ORDERER_CERT} -C ${CHANNEL} -n ${CHAINCODE} -v 1.0 -c '{"Args":["init","a", "100", "b","200"]}' -P "OR ('BlockchainLANCoopMSP.member')"
+peer chaincode install -n ex02 -v 1.0 -p blockchain-coop/go/chaincode_example02/
+peer chaincode instantiate -o ${ORDERER_ADDR} --tls --cafile ${ORDERER_CERT} -C ${CHANNEL} -n ex02 -v 1.0 -c '{"Args":["init","a", "100", "b","200"]}' -P "OR ('BlockchainLANCoopMSP.member')"
 ```
 
 ```
 # Chaincode usage in CLI environment
 source /opt/blockchain-coop/env
-peer chaincode query -C ${CHANNEL} -n ${CHAINCODE} -c '{"Args":["query","a"]}'
-peer chaincode invoke -o ${ORDERER_ADDR} -C ${CHANNEL} -n ${CHAINCODE} --tls --cafile ${ORDERER_CERT} -c '{"Args":["invoke","a","b","10"]}'
-peer chaincode query -C ${CHANNEL} -n ${CHAINCODE} -c '{"Args":["query","b"]}'
+peer chaincode query -C ${CHANNEL} -n ex02 -c '{"Args":["query","a"]}'
+peer chaincode invoke -o ${ORDERER_ADDR} -C ${CHANNEL} -n ex02 --tls --cafile ${ORDERER_CERT} -c '{"Args":["invoke","a","b","10"]}'
+peer chaincode query -C ${CHANNEL} -n ex02 -c '{"Args":["query","b"]}'
 ```
 
 ```

@@ -83,7 +83,7 @@ services:
 
   cli.bc-coop.bclan:
     container_name: cli-bclan
-    image: civisblockchain/cli-chaincode
+    image: civisblockchain/fabric-cli-chaincode
     tty: true
     environment:
       - GOPATH=/opt/gopath
