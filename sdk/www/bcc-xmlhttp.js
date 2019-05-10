@@ -3,7 +3,7 @@
  */
 
 function bccHostCmd(uri, cmd, fcn, args, onOk, onError) {
-	
+
 	var cbctx = {
 		onOk: onOk,
 		onError: onError
@@ -25,8 +25,19 @@ function bccHostCmd(uri, cmd, fcn, args, onOk, onError) {
 
 	var query = "cmd=" + encodeURIComponent(cmd) + "&fcn=" + encodeURIComponent(fcn);
 	args.map(function(arg) {query += "&args=" + encodeURIComponent(arg);});
+	if(cmd === 'invoke') {
+		var json = {
+			cmd: cmd,
+			fcn: fcn,
+			args: args
+		};
+		xmlhttp.open("POST", uri, true);
+		xmlhttp.setRequestHeader("Content-Type", "application/json");
+		xmlhttp.send(json);
+	} else {
+		xmlhttp.open("GET", uri + "?" + query, true);
+		xmlhttp.send();
+	}
 
-	xmlhttp.open("GET", uri + "?" + query, true);
-	xmlhttp.send();
 	return cbctx;
 }
