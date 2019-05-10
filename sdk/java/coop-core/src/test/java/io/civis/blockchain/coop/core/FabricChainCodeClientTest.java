@@ -23,8 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class FabricChainCodeClientTest {
 
-    public static String CLIENT_CONFIG = "file:../network-it/config.json";
-    public static String CRYPTO_CONFIG = "file:../network-it";
+    public static String CLIENT_CONFIG = "file:../infra/dev/fabric/config.json";
+    public static String CRYPTO_CONFIG = "file:../infra/dev/fabric";
     public static String BCLAN = "bclan";
     public static String USER_NAME = "dfef919ef60296ca173d99f2132becde";
     public static String USER_PASSWORD = "660bd560b383333750f629362e0160f9";

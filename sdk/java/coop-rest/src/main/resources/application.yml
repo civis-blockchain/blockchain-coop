@@ -7,8 +7,8 @@ coop:
     org: bclan
   endorsers: peer0:bclan
   config:
-    file: file:../network-it/config.json
-    crypto: file:../network-it/
+    file: file:../infra/dev/fabric/config.json
+    crypto: file:../infra/dev/fabric/
 
 server:
   port : 9090
