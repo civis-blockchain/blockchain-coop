@@ -1,0 +1,6 @@
+cli_ORGA=bc-coop.bclan
+ORDERER_ADDR=orderer.bclan:7050
+ORDERER_CERT=/etc/hyperledger/orderer/tlsca.bclan-cert.pem
+CHANNEL=sandbox
+CHAINCODE=ex02
+CORE_PEER_ADDRESS=peer0.bc-coop.bclan:7051
