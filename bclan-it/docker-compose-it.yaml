@@ -1,6 +1,3 @@
-# Copyright Luc Yriarte <luc.yriarte@thingagora.org> 2018
-# License: Apache-2.0
-
 version: '2'
 
 networks:
@@ -8,22 +5,10 @@ networks:
 
 services:
   ca.bc-coop.bclan:
-    container_name: ca-network-it
-    image: hyperledger/fabric-ca
-    environment:
-      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca
-      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/ca/ca.bc-coop.bclan-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/ca/${ca__CA_KEYFILE}
-      - FABRIC_CA_SERVER_TLS_ENABLED=true
-      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/tlsca/tlsca.bc-coop.bclan-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/tlsca/${ca__TLS_KEYFILE}
+    container_name: ca
+    image: civisblockchain/bclan-ca:0.3.1
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start -b ${ca__ADMIN}:${ca__PASSWD} -d'
-    volumes:
-      - ./fabric/crypto-config/peerOrganizations/bc-coop.bclan/ca/:/etc/hyperledger/ca/
-      - ./fabric/crypto-config/peerOrganizations/bc-coop.bclan/tlsca/:/etc/hyperledger/tlsca/
     networks:
       - bclannet
 
