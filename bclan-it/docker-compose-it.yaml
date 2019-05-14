@@ -36,61 +36,12 @@ services:
 
   cli-init.bc-coop.bclan:
     container_name: cli-init-bclan-network-it
-    image: civisblockchain/fabric-cli-chaincode:0.2.1
+    image: civisblockchain/bclan-cli:0.3.1
     tty: true
     environment:
       - GOPATH=/opt/gopath
-      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - FABRIC_LOGGING_SPEC=info
-      - CORE_CHAINCODE_LOGGING_LEVEL=info
-      - CORE_PEER_ID=cli.${cli_ORGA}
-      - CORE_PEER_ADDRESS=peer0.${cli_ORGA}:7051
-      - CORE_PEER_LOCALMSPID=BlockchainLANCoopMSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/user/msp/
-      - CORE_CHAINCODE_KEEPALIVE=10
-      - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/user/tls/client.key
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/user/tls/client.crt
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/user/tls/ca.crt
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /opt/blockchain-coop/init.sh
-    volumes:
-      - /var/run/:/host/var/run/
-      - ./../../chaincode/:/opt/gopath/src/blockchain-coop/
-      - ./fabric/util/:/opt/blockchain-coop/
-      - ./fabric/crypto-config/peerOrganizations/${cli_ORGA}/users/${cli_USER}@${cli_ORGA}/:/etc/hyperledger/user/
-      - ./fabric/crypto-config/ordererOrganizations/bclan/tlsca/:/etc/hyperledger/orderer/
-      - ./fabric/config/:/etc/hyperledger/config/
-    networks:
-      - bclannet
-
-  cli.bc-coop.bclan:
-    container_name: cli-bclan-network-it
-    image: civisblockchain/fabric-cli-chaincode:0.2.1
-    tty: true
-    environment:
-      - GOPATH=/opt/gopath
-      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - FABRIC_LOGGING_SPEC=info
-      - CORE_CHAINCODE_LOGGING_LEVEL=info
-      - CORE_PEER_ID=cli.${cli_ORGA}
-      - CORE_PEER_ADDRESS=peer0.${cli_ORGA}:7051
-      - CORE_PEER_LOCALMSPID=BlockchainLANCoopMSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/user/msp/
-      - CORE_CHAINCODE_KEEPALIVE=10
-      - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/user/tls/client.key
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/user/tls/client.crt
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/user/tls/ca.crt
-    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    command: /bin/bash
-    volumes:
-      - /var/run/:/host/var/run/
-      - ./../../chaincode/:/opt/gopath/src/blockchain-coop/
-      - ./fabric/util/:/opt/blockchain-coop/
-      - ./fabric/crypto-config/peerOrganizations/${cli_ORGA}/users/${cli_USER}@${cli_ORGA}/:/etc/hyperledger/user/
-      - ./fabric/crypto-config/ordererOrganizations/bclan/tlsca/:/etc/hyperledger/orderer/
-      - ./fabric/config/:/etc/hyperledger/config/
     networks:
       - bclannet
 
