@@ -9,6 +9,10 @@ FABRIC_PEER_NAME	:= civisblockchain/bclan-peer
 FABRIC_PEER_IMG	:= ${FABRIC_PEER_NAME}:${VERSION}
 FABRIC_PEER_LATEST := ${FABRIC_PEER_NAME}:latest
 
+FABRIC_ORDERER_NAME	:= civisblockchain/bclan-orderer
+FABRIC_ORDERER_IMG	:= ${FABRIC_ORDERER_NAME}:${VERSION}
+FABRIC_ORDERER_LATEST := ${FABRIC_ORDERER_NAME}:latest
+
 build: build-ca build-peer
 
 tag-latest: tag-latest-ca tag-latest-peer
@@ -45,3 +49,16 @@ tag-latest-peer:
 
 push-peer:
 	@docker push ${FABRIC_PEER_IMG}
+
+build-orderer:
+	docker build \
+    	--build-arg COOP_CA_DOMAIN=$$orderer_org \
+    	--build-arg COOP_ORDERER_HOSTNAME=$$orderer_hostname \
+    	-f docker/Orderer_Dockerfile \
+    	-t ${FABRIC_ORDERER_IMG} .
+
+tag-latest-orderer:
+	@docker tag ${FABRIC_ORDERER_IMG} ${FABRIC_ORDERER_LATEST}
+
+push-orderer:
+	@docker push ${FABRIC_ORDERER_IMG}
