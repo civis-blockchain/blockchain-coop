@@ -39,30 +39,15 @@ services:
 
   peer0.bc-coop.bclan:
     container_name: peer0-network-it
-    image: hyperledger/fabric-peer
+    image: civisblockchain/bclan-peer:0.3.1
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
       - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_bclannet
-      - CORE_PEER_ID=peer0.bc-coop.bclan
-      - FABRIC_LOGGING_SPEC=info
-      - CORE_CHAINCODE_LOGGING_LEVEL=info
-      - CORE_PEER_LOCALMSPID=BlockchainLANCoopMSP
-      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/
-      - CORE_PEER_ADDRESS=peer0.bc-coop.bclan:7051
-      - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/tls/server.key
-      - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/tls/server.crt
-      - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/tls/ca.crt
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.bc-coop.bclan:7051
-    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
-    command: peer node start
     ports:
       - 7051:7051
       - 7053:7053
     volumes:
       - /var/run/:/host/var/run/
-      - ./fabric/crypto-config/peerOrganizations/bc-coop.bclan/peers/peer0.bc-coop.bclan/msp:/etc/hyperledger/msp/
-      - ./fabric/crypto-config/peerOrganizations/bc-coop.bclan/peers/peer0.bc-coop.bclan/tls:/etc/hyperledger/tls/
     networks:
       - bclannet
 
