@@ -23,8 +23,6 @@ function bccHostCmd(uri, cmd, fcn, args, onOk, onError) {
 		}
 	};
 
-	var query = "cmd=" + encodeURIComponent(cmd) + "&fcn=" + encodeURIComponent(fcn);
-	args.map(function(arg) {query += "&args=" + encodeURIComponent(arg);});
 	if(cmd === 'invoke') {
 		var json = {
 			cmd: cmd,
@@ -35,6 +33,8 @@ function bccHostCmd(uri, cmd, fcn, args, onOk, onError) {
 		xmlhttp.setRequestHeader("Content-Type", "application/json");
 		xmlhttp.send(json);
 	} else {
+		var query = "cmd=" + encodeURIComponent(cmd) + "&fcn=" + encodeURIComponent(fcn);
+		args.map(function(arg) {query += "&args=" + encodeURIComponent(arg);});
 		xmlhttp.open("GET", uri + "?" + query, true);
 		xmlhttp.send();
 	}
