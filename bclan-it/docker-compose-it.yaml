@@ -5,7 +5,7 @@ networks:
 
 services:
   ca.bc-coop.bclan:
-    container_name: ca
+    container_name: ca-bclan-network-it
     image: civisblockchain/bclan-ca:0.3.1
     ports:
       - 7054:7054
@@ -21,11 +21,11 @@ services:
       - bclannet
 
   peer0.bc-coop.bclan:
-    container_name: peer0-network-it
+    container_name: peer0-bclan-network-it
     image: civisblockchain/bclan-peer:0.3.1
     environment:
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_bclannet
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=bclan_bclannet
     ports:
       - 7051:7051
       - 7053:7053
@@ -47,27 +47,16 @@ services:
     container_name: cli-bclan-network-it
     image: civisblockchain/bclan-cli:0.3.1
     tty: true
-    environment:
-      - GOPATH=/opt/gopath
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     networks:
       - bclannet
 
   coop-rest-java:
-    image: civisblockchain/coop-rest-java:latest
+    container_name: coop-rest-bclan-network-it
+    image: civisblockchain/bclan-coop-rest:0.3.1
     environment:
-      - coop_channel=${coop_channel}
-      - coop_ccid=${coop_ccid}
-      - coop_user_name=${ca__ADMIN}
-      - coop_user_password=${ca__PASSWD}
-      - coop_user_org=${coop_user_org}
-      - coop_config_file=file:/opt/rest-coop/config.json
-      - coop_config_crypto=file:/opt/rest-coop
-      - coop_endorsers=${coop_endorsers}
-    volumes:
-      - ./fabric/config.json:/opt/rest-coop/config.json
-      - ./fabric/crypto-config:/opt/rest-coop/crypto-config
+      - coop_ccid=ssm
     ports:
       - 9090:9090
     networks:

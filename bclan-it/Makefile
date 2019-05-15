@@ -17,11 +17,15 @@ FABRIC_CLI_NAME	:= civisblockchain/bclan-cli
 FABRIC_CLI_IMG	:= ${FABRIC_CLI_NAME}:${VERSION}
 FABRIC_CLI_LATEST := ${FABRIC_CLI_NAME}:latest
 
-build: build-ca build-peer build-orderer build-cli
+FABRIC_COOP_REST_NAME	:= civisblockchain/bclan-coop-rest
+FABRIC_COOP_REST_IMG	:= ${FABRIC_COOP_REST_NAME}:${VERSION}
+FABRIC_COOP_REST_LATEST := ${FABRIC_COOP_REST_NAME}:latest
 
-tag-latest: tag-latest-ca tag-latest-peer tag-latest-orderer tag-latest-cli
+build: build-ca build-peer build-orderer build-cli build-coop-rest
 
-push: push-ca push-peer push-orderer push-cli
+tag-latest: tag-latest-ca tag-latest-peer tag-latest-orderer tag-latest-cli tag-latest-coop-rest
+
+push: push-ca push-peer push-orderer push-cli push-coop-rest
 
 build-ca:
 	@docker build \
@@ -82,3 +86,26 @@ tag-latest-cli:
 
 push-cli:
 	@docker push ${FABRIC_CLI_IMG}
+
+build-coop-rest:
+	@echo $$coop_channel
+	@echo $$coop_ccid
+	@echo $$coop_user_org
+	@echo $$coop_endorsers
+	@echo $$ca__ADMIN
+	@echo $$ca__PASSWD
+	@docker build \
+    	--build-arg coop_channel=$$coop_channel \
+    	--build-arg coop_ccid=$$coop_ccid \
+		--build-arg coop_user_org=$$coop_user_org \
+		--build-arg coop_endorsers=$$coop_endorsers \
+    	--build-arg ca__ADMIN=$$ca__ADMIN \
+    	--build-arg ca__PASSWD=$$ca__PASSWD \
+    	-f docker/CoopRest_Dockerfile \
+    	-t ${FABRIC_COOP_REST_IMG} .
+
+tag-latest-coop-rest:
+	@docker tag ${FABRIC_COOP_REST_IMG} ${FABRIC_COOP_REST_LATEST}
+
+push-coop-rest:
+	@docker push ${FABRIC_COOP_REST_IMG}

@@ -17,6 +17,7 @@ ENV CORE_PEER_TLS_ENABLED true
 ENV CORE_PEER_TLS_KEY_FILE /etc/hyperledger/user/tls/client.key
 ENV CORE_PEER_TLS_CERT_FILE /etc/hyperledger/user/tls/client.crt
 ENV CORE_PEER_TLS_ROOTCERT_FILE /etc/hyperledger/user/tls/ca.crt
+ENV GOPATH /opt/gopath
 
 COPY ./fabric/util /opt/blockchain-coop/util
 COPY ./fabric/crypto-config/peerOrganizations/${COOP_PEER_DOMAIN}/users/${CLI_USER}@${COOP_PEER_DOMAIN}/ /etc/hyperledger/user
