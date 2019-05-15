@@ -1,19 +1,19 @@
 # Network configuration: bclan-it
 
-Network with a generatied crypto to reproduce test environement
+Network with a generated crypto to reproduce test environment
 
-# Start
-
+## Use
+ * Copy [docker-coompose-it.yaml](docker-coompose-it.yaml) in your project
+ * Start compose:
 ```
 docker-compose -f docker-compose-it.yaml up -d
 ```
-
-# Down
-
+ * Copy configuration
 ```
-docker-compose -f docker-compose-it.yaml down
+mkdir -p infra
+docker cp  cli-bclan-network-it:/opt/blockchain-coop-dev/ ./infra/dev
 ```
 
 
-# Release
+## Release
 make build tag-latest -e VERSION=0.3.1

@@ -1,4 +1,4 @@
-version: '2'
+version: '3.7'
 
 networks:
   bclannet:
@@ -37,11 +37,20 @@ services:
   cli-init.bc-coop.bclan:
     container_name: cli-init-bclan-network-it
     image: civisblockchain/bclan-cli:0.3.1
+    environment:
+      - GOPATH=/opt/gopath
+    command: /opt/blockchain-coop/util/init.sh
+    networks:
+      - bclannet
+
+  cli.bc-coop.bclan:
+    container_name: cli-bclan-network-it
+    image: civisblockchain/bclan-cli:0.3.1
     tty: true
     environment:
       - GOPATH=/opt/gopath
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
-    command: /opt/blockchain-coop/init.sh
+    command: /bin/bash
     networks:
       - bclannet
 

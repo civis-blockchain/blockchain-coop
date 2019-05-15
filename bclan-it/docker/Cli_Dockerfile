@@ -18,7 +18,11 @@ ENV CORE_PEER_TLS_KEY_FILE /etc/hyperledger/user/tls/client.key
 ENV CORE_PEER_TLS_CERT_FILE /etc/hyperledger/user/tls/client.crt
 ENV CORE_PEER_TLS_ROOTCERT_FILE /etc/hyperledger/user/tls/ca.crt
 
-COPY ./fabric/util/ /opt/blockchain-coop/
+COPY ./fabric/util /opt/blockchain-coop/util
 COPY ./fabric/crypto-config/peerOrganizations/${COOP_PEER_DOMAIN}/users/${CLI_USER}@${COOP_PEER_DOMAIN}/ /etc/hyperledger/user
 COPY ./fabric/crypto-config/ordererOrganizations/${COOP_CA_DOMAIN}/tlsca/ /etc/hyperledger/orderer/
 COPY ./fabric/config /etc/hyperledger/config
+
+COPY ./fabric /opt/blockchain-coop-dev/fabric
+COPY ./user /opt/blockchain-coop-dev/user
+COPY ./.env /opt/blockchain-coop-dev

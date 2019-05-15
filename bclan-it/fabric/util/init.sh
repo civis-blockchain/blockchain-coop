@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source /opt/blockchain-coop/env
+source /opt/blockchain-coop/util/env
 
 #Join network
 echo 'Join channel ${CHANNEL}'
@@ -12,6 +12,6 @@ source /opt/civis-blockchain/ssm/env
 echo 'Install chaincode ssm'
 peer chaincode install /opt/civis-blockchain/ssm/ssm.pak
 echo 'Instantiate chaincode ssm'
-peer chaincode instantiate -o ${ORDERER_ADDR} --tls --cafile ${ORDERER_CERT} -C ${CHANNEL} -n ${CHAINCODE} -v ${VERSION} -c $(cat /opt/blockchain-coop/init.arg) -P "OR ('BlockchainLANCoopMSP.member')"
+peer chaincode instantiate -o ${ORDERER_ADDR} --tls --cafile ${ORDERER_CERT} -C ${CHANNEL} -n ${CHAINCODE} -v ${VERSION} -c $(cat /opt/blockchain-coop/util/init.arg) -P "OR ('BlockchainLANCoopMSP.member')"
 sleep 5
 peer chaincode query -C ${CHANNEL} -n ${CHAINCODE} -c '{"Args":["list", "user"]}'
