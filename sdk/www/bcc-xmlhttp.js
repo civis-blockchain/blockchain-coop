@@ -31,7 +31,7 @@ function bccHostCmd(uri, cmd, fcn, args, onOk, onError) {
 		};
 		xmlhttp.open("POST", uri, true);
 		xmlhttp.setRequestHeader("Content-Type", "application/json");
-		xmlhttp.send(json);
+		xmlhttp.send(JSON.stringify(json));
 	} else {
 		var query = "cmd=" + encodeURIComponent(cmd) + "&fcn=" + encodeURIComponent(fcn);
 		args.map(function(arg) {query += "&args=" + encodeURIComponent(arg);});
