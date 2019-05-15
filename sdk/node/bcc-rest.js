@@ -48,11 +48,14 @@ context.org = context.endorsers[0].org;
  */
 
 var errHandler = function(err) {
-	console.log(err.stack ? err.stack : err);
-	var result = err.toString ? err.toString() : "Error: blockchain call failure";
-	httpResHandler(this.res, result);
+	errHandlerRes(this.res, result);
 };
 
+var errHandlerRes = function(res, err) {
+	console.log(err.stack ? err.stack : err);
+	var result = err.toString ? err.toString() : "Error: blockchain call failure";
+	httpResHandler(res, result);
+};
 var successHandler = function(msg) {
 	httpResHandler(this.res, msg);
 };
@@ -93,8 +96,12 @@ var httpReqHandler = function(req, res) {
 				body += data;
 			});
 			req.on('end', () => {
-				var params = parsePostBody(req, body);
-				perform(res, params);
+				try {
+					var params = parsePostBody(req, body);
+					perform(res, params);
+				} catch(err) {
+					errHandlerRes(res, err);
+				}
 			});
 		} else if (req.method === 'GET') {
 			var params = url.parse(req.url, true).query;
@@ -103,7 +110,7 @@ var httpReqHandler = function(req, res) {
 			httpResHandler(res, "")
 		}
 	} catch(err) {
-		errHandler(err);
+		errHandlerRes(res, err);
 	}
 };
 
