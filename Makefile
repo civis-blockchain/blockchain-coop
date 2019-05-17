@@ -6,11 +6,11 @@ SDK_REST_JAVA_NAME	    := civisblockchain/coop-rest-java
 SDK_REST_JAVA_IMG	    := ${SDK_REST_JAVA_NAME}:${VERSION}
 SDK_REST_JAVA_LATEST	:= ${SDK_REST_JAVA_NAME}:latest
 
-build: build-docker-fabric-cli-chaincode build-docker-sdk-rest-java
+build: build-docker-fabric-cli-chaincode build-docker-sdk-rest-java build-bclan-it
 
-tag-latest: tag-latest-docker-fabric-cli-chaincode tag-latest-docker-sdk-rest-java
+tag-latest: tag-latest-docker-fabric-cli-chaincode tag-latest-docker-sdk-rest-java tag-latest-bclan-it
 
-push: push-docker-fabric-cli-chaincode push-docker-sdk-rest-java
+push: push-docker-fabric-cli-chaincode push-docker-sdk-rest-java push-docker-bclan-it
 
 build-docker-fabric-cli-chaincode:
 	@docker build -f docker/FabricCli_Dockerfile -t ${FABRIC_CLI_CHAINCODE_IMG} .
@@ -32,3 +32,12 @@ tag-latest-docker-sdk-rest-java:
 
 push-docker-sdk-rest-java:
 	@docker push ${SDK_REST_JAVA_NAME}
+
+build-bclan-it:
+	@make -C bclan-it build -e VERSION=${VERSION}
+
+tag-latest-bclan-it:
+	@make -C bclan-it tag-latest -e VERSION=${VERSION}
+
+push-docker-bclan-it:
+	@make -C bclan-it push -e VERSION=${VERSION}
