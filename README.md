@@ -9,3 +9,4 @@ The blockchain-coop is a collection of Hyperledger network configurations for va
     * [Blockchain explorer](http://peer1.pr-bc1.civis-blockchain.org:8080)
     * [Signing State Machines](https://github.com/civis-blockchain/blockchain-ssm) live [SDK](http://peer0.pr-bc1.chain-ops.net?host=ca.pr-bc1.chain-ops.net&port=8001)
   * Blockchain-coop [wiki](https://github.com/civis-blockchain/blockchain-coop/wiki)
+    * [Rest Api](https://github.com/civis-blockchain/blockchain-coop/wiki/Coop-Rest-API)

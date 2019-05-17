@@ -34,7 +34,7 @@ peersOrgs.map(function(peerOrgStr)
 	var peerOrgArray = peerOrgStr.split(':');
 	context.endorsers.push(
 	{
-		'peer': peerOrgArray[0], 
+		'peer': peerOrgArray[0],
 		'org': peerOrgArray[1]
 	});
 });
@@ -48,11 +48,14 @@ context.org = context.endorsers[0].org;
  */
 
 var errHandler = function(err) {
-	console.log(err.stack ? err.stack : err);
-	result = err.toString ? err.toString() : "Error: blockchain call failure";
-	httpResHandler(this.res, result);
+	errHandlerRes(this.res, result);
 };
 
+var errHandlerRes = function(res, err) {
+	console.log(err.stack ? err.stack : err);
+	var result = err.toString ? err.toString() : "Error: blockchain call failure";
+	httpResHandler(res, result);
+};
 var successHandler = function(msg) {
 	httpResHandler(this.res, msg);
 };
@@ -67,26 +70,14 @@ var BlockchainCoop = require("./blockchain-coop.js").BlockchainCoop;
 /*
  * HTTP requests handlers
  */
-
-function argsFromQueryString(queryString) {
-	var args = {};
-	if (!queryString)
-		return args;
-	var getVars = decodeURI(queryString).split("\&");
-	for (var i=0; i<getVars.length; i++) {
-		var varVal = getVars[i].split("\=");
-		if (varVal.length == 2)
-			args[varVal[0]] = varVal[1];
-	}
-	return args;
-}
-
 var httpResHandler = function(res, result) {
 	res.writeHead(200, {
-		'Content-Type': 'application/json', 
+		'Content-Type': 'application/json',
+		'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+		'Access-Control-Allow-Headers': 'Content-Type',
 		'Access-Control-Allow-Origin': '*'}
 	);
-	str = null;
+	var str = null;
 	try {
 		str = JSON.stringify(result);
 	}
@@ -95,35 +86,67 @@ var httpResHandler = function(res, result) {
 	}
 	res.write(str);
 	res.end();
-}
+};
 
 var httpReqHandler = function(req, res) {
-	var result = "Error: generic error";
-	var reqArgs = url.parse(req.url, true).query;
+	try {
+		if (req.method === 'POST') {
+			var body = '';
+			req.on('data', (data) => {
+				body += data;
+			});
+			req.on('end', () => {
+				try {
+					var params = parsePostBody(req, body);
+					perform(res, params);
+				} catch(err) {
+					errHandlerRes(res, err);
+				}
+			});
+		} else if (req.method === 'GET') {
+			var params = url.parse(req.url, true).query;
+			perform(res, params);
+		} else if (req.method === 'OPTIONS') {
+			httpResHandler(res, "")
+		}
+	} catch(err) {
+		errHandlerRes(res, err);
+	}
+};
+
+var parsePostBody = function(req, data) {
+	var contentType = req.headers["content-type"] || "";
+	if(contentType.startsWith('application/x-www-form-urlencoded')) {
+		return querystring.parse(data);
+	} else if(contentType.startsWith('application/json')) {
+		return JSON.parse(data);
+	} else {
+		return {};
+	}
+};
+
+var perform = function(res, reqArgs) {
 	var command = reqArgs.cmd;
 	context.fcn = reqArgs.fcn;
 	context.args = reqArgs.args;
-	try {
-		var cbctx = {};
-		var bcc = new BlockchainCoop(context);
-		cbctx = bcc.perform(command, context, successHandler, errHandler);
-		cbctx.res = res;
-	}
-	catch(err) {
-		errHandler(err);
-	}
-}
+	var bcc = new BlockchainCoop(context);
+	var cbctx = bcc.perform(command, context, successHandler, errHandler);
+	cbctx.res = res;
+};
+
 
 
 /*
  * Create HTTP server
  */
 
-var http = require('http');
-var url = require('url');
+const http = require('http');
+const url = require('url');
+const querystring = require('querystring');
 
-var srvr = http.createServer(httpReqHandler)
-http.createServer(httpReqHandler)
+
+var srvr = http.createServer(httpReqHandler);
+http.createServer(httpReqHandler);
 console.log("Starting REST server on port " + context.port);
 
 srvr.listen(context.port);
