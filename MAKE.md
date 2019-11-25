@@ -50,21 +50,3 @@ make push-docker-fabric-cli-chaincode -e VERSION=0.2.1
 ```
 make inspect-docker-fabric-cli-chaincode -e VERSION=0.2.1
 ```
-
-## Java Rest SDK
-
-### Build
-
-```
-make build-docker-sdk-rest-java -e VERSION=0.2.1
-```
-
-### Tag as latest
-```
-make tag-latest-docker-sdk-rest-java -e VERSION=0.2.1
-```
-
-### Push
-```
-make push-docker-sdk-rest-java -e VERSION=0.2.1
-```
