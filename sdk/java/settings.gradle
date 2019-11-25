@@ -1,8 +1,0 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-}
-rootProject.name = "blockchain-coop-sdk"
-
-include 'coop-core', 'coop-rest'
