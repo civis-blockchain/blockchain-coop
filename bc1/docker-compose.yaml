@@ -109,6 +109,7 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/tls/server.crt
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/tls/ca.crt
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.pr-bc1.chain-ops.net:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.pr-bc1.civis-blockchain.org:7051
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     ports:
@@ -139,7 +140,7 @@ services:
       - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/tls/server.crt
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/tls/ca.crt
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.pr-bc1.chain-ops.net:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.pr-bc1.chain-ops.net:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.pr-bc1.civis-blockchain.org:7051
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     ports:
